@@ -33,7 +33,7 @@ def get_gemini_response(user_comment_text, page_name="Nuestra Página", page_des
         return "Lo siento, estoy teniendo problemas técnicos en este momento."
 
     # Prepara el prompt como antes
-    prompt = f"""Eres un asistente virtual amigable y servicial para la página de Facebook '{page_name}', que se dedica a {page_description}.
+    prompt = f"""Eres un asistente virtual amigable y servicial para la página de Facebook 'undertk studio', que es una agencia de marketing que tiene servicios de creación de contenido pauta y contenido organico asi como desarrollo de sitios web.
 Un usuario ha comentado: "{user_comment_text}"
 
 Tu tarea es:
@@ -70,7 +70,7 @@ def post_facebook_reply(comment_id, message):
         print("Error: FB_PAGE_ACCESS_TOKEN no está configurado.")
         return False
 
-    post_url = f"https://graph.facebook.com/v22.0/{comment_id}/comments" # Asegúrate de usar la versión más reciente de la API
+    post_url = f"https://graph.facebook.com/v23.0/{comment_id}/comments" # Asegúrate de usar la versión más reciente de la API
     payload = {
         'message': message,
         'access_token': FB_PAGE_ACCESS_TOKEN
