@@ -17,7 +17,7 @@ if not FB_VERIFY_TOKEN or not FB_PAGE_ACCESS_TOKEN or not GEMINI_API_KEY:
 
 try:
     genai.configure(api_key=GEMINI_API_KEY)
-    gemini_model = genai.GenerativeModel('gemini-1.5-flash') # O el modelo que prefieras
+    gemini_model = genai.GenerativeModel('gemini-2.0-flash') # O el modelo que prefieras
 except Exception as e:
     print(f"Error al configurar Gemini: {e}")
     gemini_model = None
