@@ -26,30 +26,41 @@ except Exception as e:
 
 def get_gemini_response(user_comment_text, page_name="Nuestra Página", page_description="ayudarte con tus consultas generales"):
     """
-    Genera una respuesta usando Gemini.
+    Genera una respuesta usando Gemini, con logs detallados para depuración.
     """
     if not gemini_model:
-        return "Lo siento, estoy teniendo problemas técnicos en este momento. Por favor, inténtalo más tarde."
+        print("CRITICAL ERROR: El modelo de Gemini no fue inicializado correctamente.")
+        return "Lo siento, estoy teniendo problemas técnicos en este momento."
 
-    prompt = f"""Eres un asistente virtual amigable y servicial para la página de Facebook '{page_name}', que se dedica a venta de pasteles principalmente asi como galletas y pays y muffins.
+    # Prepara el prompt como antes
+    prompt = f"""Eres un asistente virtual amigable y servicial para la página de Facebook '{page_name}', que se dedica a {page_description}.
 Un usuario ha comentado: "{user_comment_text}"
 
 Tu tarea es:
 1. Analiza el comentario del usuario.
 2. Si es una pregunta general que puedes responder, hazlo de forma concisa y amigable.
 3. Si la pregunta es muy específica, sobre un pedido, un problema personal, o requiere información que no tienes, sugiere amablemente que contacten por mensaje privado o indica que un humano del equipo responderá pronto.
-4. Si el comentario no es una pregunta (ej. un saludo, un agradecimiento, spam), responde de forma apropiada o considera no responder si es spam. Por ahora, si no es una pregunta clara, simplemente di "Gracias por tu comentario!".
+4. Si el comentario no es una pregunta (ej. un saludo, un agradecimiento), responde de forma apropiada.
 5. No inventes información. Si no sabes la respuesta a una pregunta específica, admítelo.
-6. El sitio web es https://www.ladivinata.mx/ puedes analizar la pagina para encontrar respuestas que se encuentren alli
+
+la información general la puedes encontrar en el sitio https://www.undertk.studio/
+ si piden información más detallada proporcionales el siguiente enlace de whatsapp https://api.whatsapp.com/send/?phone=525568764719&text&type=phone_number&app_absent=0
 
 Responde directamente al comentario del usuario.
 """
+    
+    print("DEBUG: Dentro de get_gemini_response. A punto de llamar a gemini_model.generate_content(prompt).")
     try:
+        # Aquí es donde probablemente ocurre el timeout
         response = gemini_model.generate_content(prompt)
+        
+        # Si ves este log, significa que la llamada a Gemini funcionó
+        print("DEBUG: Llamada a Gemini API exitosa.")
         return response.text
     except Exception as e:
-        print(f"Error al generar respuesta de Gemini: {e}")
-        return "Lo siento, no pude procesar tu solicitud en este momento."
+        # Si hay un error rápido en la API, lo veremos aquí
+        print(f"CRITICAL ERROR: Ocurrió una excepción al llamar a Gemini API: {e}")
+        return "Lo siento, no pude procesar tu solicitud con la IA en este momento."
 
 def post_facebook_reply(comment_id, message):
     """
